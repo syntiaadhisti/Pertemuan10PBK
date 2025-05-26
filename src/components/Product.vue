@@ -23,45 +23,45 @@ export default {
           name: 'Strawberry ice creem',
           description: 'Rasa stroberi dengan fla strawberry yang melimpah dan menyegarkan.',
           price: 18000,
-          image: 'Homemade Strawberry Ice Cream.jpg',
+          image: new URL('../assets/Homemade Strawberry Ice Cream.jpg', import.meta.url).href
         },
         {
           id: 2,
           name: 'Vanilla Cloud',
           description: 'Lembut seperti awan dengan sprinkle yang menambahkan sentuhan manis.',
           price: 16000,
-          image: 'vanila sprinkle.jpg'
+          image: new URL('../assets/vanila sprinkle.jpg', import.meta.url).href
         },
         {
           id: 3,
           name: 'Minty Bear',
           description: 'Es krim mint segar dengan cokelat choco-chip lucu.',
           price: 19000,
-          image: 'choco mint.jpg'
+          image: new URL('../assets/choco mint.jpg', import.meta.url).href
         },
         {
           id: 4,
           name: 'Lotus Ice Cream',
-          description: 'ice cream dengan rasa Biskuit Lotus yang khas.',
+          description: 'Ice cream dengan rasa Biskuit Lotus yang khas.',
           price: 20000,
-          image: 'Homemade Biscoff Ice Cream (1).jpg'
+          image: new URL('../assets/Homemade Biscoff Ice Cream (1).jpg', import.meta.url).href
         }
       ]
     };
   },
   methods: {
     pesan(item) {
-      // Kirim nama produk dan harga lewat query params
-      this.$router.push({ 
-        path: '/pemesanan', 
-        query: { 
-          produk: item.name, 
-          harga: item.price 
-        } 
+      this.$router.push({
+        path: '/pemesanan',
+        query: {
+          produk: item.name,
+          harga: item.price
+        }
       });
     }
   }
 }
+
 </script>
 
 <style scoped>
