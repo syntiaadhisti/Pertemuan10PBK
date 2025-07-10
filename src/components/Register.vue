@@ -58,29 +58,51 @@ export default {
   methods: {
     async handleRegister() {
       try {
-      
-        const postRes = await axios.post('http://localhost:3000/users', {
+        // Get existing users from localStorage or initialize empty array
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+
+        // Check if username or email already exists
+        const usernameExists = users.some(user => user.username === this.regUsername.trim().toLowerCase());
+        const emailExists = users.some(user => user.email === this.regEmail.trim());
+
+        if (usernameExists) {
+          alert('Username sudah digunakan. Silakan pilih username lain.');
+          return;
+        }
+        if (emailExists) {
+          alert('Email sudah digunakan. Silakan gunakan email lain.');
+          return;
+        }
+
+        // Add new user to users array
+        users.push({
           username: this.regUsername.trim().toLowerCase(),
           email: this.regEmail.trim(),
           password: this.regPassword.trim()
         });
-        console.log('Register: post response', postRes);
+
+        // Save updated users array to localStorage
+        localStorage.setItem('users', JSON.stringify(users));
 
         alert('Registrasi berhasil! Silakan login.');
         this.isLogin = true;
       } catch (error) {
         console.error('Register error:', error);
-        alert('Registrasi gagal: ' + (error.response?.data || error.message || error));
+        alert('Registrasi gagal: ' + (error.message || error));
       }
     },
     async handleLogin() {
       try {
         console.log('Login: attempting with', this.loginUsername, this.loginPassword);
-        const res = await axios.get(`http://localhost:3000/users?username=${this.loginUsername.trim().toLowerCase()}&password=${this.loginPassword.trim()}`);
-        console.log('Login: response', res);
-        if (res.data.length > 0) {
-          store.username = res.data[0].username;
-          store.userImage = res.data[0].image || '';
+        // Get users from localStorage
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+
+        // Find user matching username and password
+        const user = users.find(user => user.username === this.loginUsername.trim().toLowerCase() && user.password === this.loginPassword.trim());
+
+        if (user) {
+          store.username = user.username;
+          store.userImage = user.image || '';
           alert("Login berhasil!");
           this.$router.push('/');
         } else {
